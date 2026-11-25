@@ -1,0 +1,98 @@
+---
+import { Code } from 'astro:components';
+const themes = { light: 'github-light', dark: 'github-dark' } as const;
+const react = `import 'peekons/peekons.css';
+import { Peekon } from 'peekons/react';
+import { mail } from 'peekons/icons';
+
+export function Contact() {
+  return (
+    <a href="mailto:hi@example.com" className="btn">
+      Write me
+      <Peekon icon={mail} />
+    </a>
+  );
+}`;
+const astro = `<a href="mailto:hi@example.com" class="btn" data-peekon="mail">Write me</a>
+<button data-peekon="download" data-peekon-greet="false">Download</button>
+
+<script>
+  import 'peekons/peekons.css';
+  import { mount } from 'peekons';
+  import { mail, download } from 'peekons/icons';
+
+  mount({ mail, download });
+</script>`;
+const own = `<svg viewBox="0 0 24 24" data-gesture="hop">
+  <rect x="4" y="5" width="16" height="14" rx="3" class="pk-body"/>
+  <circle cx="9.5" cy="11" r="1.15" class="pk-eye"/>
+  <circle cx="14.5" cy="11" r="1.15" class="pk-eye pk-wink"/>
+</svg>`;
+const options = [
+  ['icon', 'required', 'Which mascot. Import it from peekons/icons.'],
+  ['gesture', "the icon's own", 'wink, wave, nod, hop, flip or spin.'],
+  ['greet', 'true', 'Say hello once when the host first scrolls into view. false keeps it still until someone hovers or focuses.'],
+];
+const vars = [
+  ['--pk-ink', 'page text color', 'Outlines and eyes.'],
+  ['--pk-paper', 'page background', 'Body fill.'],
+  ['--pk-accent', 'same as ink', 'Hearts and solid tiles.'],
+  ['--pk-blush', 'ink at 16%', 'Cheeks.'],
+  ['--pk-size', '26px', 'Mascot size.'],
+  ['--pk-inset', '5px', "Distance from the host's right edge."],
+];
+const classes = [
+  ['pk-body', 'Filled shape with an outline.'],
+  ['pk-line', 'A stroke.'],
+  ['pk-eye', 'An eye. The right one also gets pk-wink.'],
+  ['pk-blush', 'A cheek.'],
+  ['pk-accent, pk-solid, pk-rev', 'Accent fill, solid body, paper-colored detail on a solid body.'],
+];
+---
+<section id="docs" class="mx-auto max-w-6xl px-5 py-24">
+  <h2 class="text-4xl font-bold tracking-tight">Use it</h2>
+  <div class="mt-10 grid gap-10 lg:grid-cols-2 *:min-w-0">
+    <div>
+      <h3 class="text-lg font-semibold">React</h3>
+      <p class="mt-1 text-sm text-muted">Put the mascot inside the element it should come out of.</p>
+      <div class="mt-4 overflow-hidden rounded-xl border border-line bg-surface"><Code code={react} lang="jsx" themes={themes} defaultColor={false} /></div>
+    </div>
+    <div>
+      <h3 class="text-lg font-semibold">Astro and plain HTML</h3>
+      <p class="mt-1 text-sm text-muted">Mark the hosts and mount once. mount returns a cleanup function.</p>
+      <div class="mt-4 overflow-hidden rounded-xl border border-line bg-surface"><Code code={astro} lang="astro" themes={themes} defaultColor={false} /></div>
+    </div>
+  </div>
+
+  <div class="mt-16 grid gap-10 lg:grid-cols-2 *:min-w-0">
+    <div>
+      <h3 class="text-lg font-semibold">Options</h3>
+      <table class="mt-4 w-full text-left text-sm">
+        <thead class="text-muted"><tr><th class="py-2 pr-4 font-normal">Prop</th><th class="py-2 pr-4 font-normal">Default</th><th class="py-2 font-normal">What it does</th></tr></thead>
+        <tbody>{options.map(([p, d, w]) => <tr class="border-t border-line align-top"><td class="py-2.5 pr-4 font-mono text-xs">{p}</td><td class="py-2.5 pr-4 text-muted">{d}</td><td class="py-2.5">{w}</td></tr>)}</tbody>
+      </table>
+      <p class="mt-4 text-sm text-muted">In HTML the same options are data-peekon-gesture and data-peekon-greet="false", or mount(icons, &#123; greet: false &#125;) for every host.</p>
+    </div>
+    <div>
+      <h3 class="text-lg font-semibold">Colors and size</h3>
+      <table class="mt-4 w-full text-left text-sm">
+        <thead class="text-muted"><tr><th class="py-2 pr-4 font-normal">Variable</th><th class="py-2 pr-4 font-normal">Default</th><th class="py-2 font-normal">Paints</th></tr></thead>
+        <tbody>{vars.map(([v, d, w]) => <tr class="border-t border-line align-top"><td class="py-2.5 pr-4 font-mono text-xs">{v}</td><td class="py-2.5 pr-4 text-muted">{d}</td><td class="py-2.5">{w}</td></tr>)}</tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="mt-16 grid gap-10 lg:grid-cols-2 *:min-w-0">
+    <div>
+      <h3 class="text-lg font-semibold">Draw your own</h3>
+      <p class="mt-1 text-sm text-muted">A mascot is a 24 by 24 SVG with a few classes. Keep the face above the bottom fifth: that part stays behind the edge.</p>
+      <ul class="mt-4 text-sm">{classes.map(([c, w]) => <li class="flex gap-4 border-t border-line py-2.5"><span class="w-44 shrink-0 font-mono text-xs">{c}</span><span>{w}</span></li>)}</ul>
+    </div>
+    <div class="overflow-hidden rounded-xl border border-line bg-surface self-start"><Code code={own} lang="html" themes={themes} defaultColor={false} /></div>
+  </div>
+
+  <p class="mt-16 max-w-2xl text-sm text-muted">
+    Mascots are hidden from screen readers, never take a click, and stay still for anyone who asked
+    their system for reduced motion.
+  </p>
+</section>

@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>peekons playground</title>
+    <link rel="stylesheet" href="./playground.css" />
+  </head>
+  <body>
+    <main>
+      <h1>peekons</h1>
+      <p class="lead">Hover or focus anything below.</p>
+      <section id="buttons" class="grid"></section>
+      <section class="hosts">
+        <div class="card" data-peekon="mail" tabindex="0">A box with a mascot</div>
+        <p>Some text with a <span class="word" data-peekon="github" data-peekon-gesture="hop">peeking word</span> inside.</p>
+      </section>
+      <section class="dark">
+        <button class="btn" data-peekon="linkedin">Dark mode</button>
+        <button class="btn" data-peekon="mail" data-peekon-gesture="nod">Nod</button>
+      </section>
+      <section id="react"></section>
+    </main>
+    <script type="module" src="./main.tsx"></script>
+  </body>
+</html>

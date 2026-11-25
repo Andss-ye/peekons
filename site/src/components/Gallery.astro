@@ -1,0 +1,40 @@
+---
+import { Code } from 'astro:components';
+import { STYLES, type Style } from '../data/styles';
+
+const imports = (s: Style) => {
+  const icons = [...new Set([...s.code.matchAll(/icon=\{(\w+)\}/g)].map((m) => m[1]))];
+  return `import { Peekon } from 'peekons/react';\nimport { ${icons.join(', ')} } from 'peekons/icons';\n\n${s.code}`;
+};
+const groups = [
+  ['buttons', 'Buttons', 'The styles teams ship every day, each with a mascot behind it.'],
+  ['beyond', 'Beyond buttons', 'A host is any element: cards, words, fields, menus.'],
+] as const;
+---
+<section id="styles" class="mx-auto max-w-6xl px-5 py-24">
+  <h2 class="text-4xl font-bold tracking-tight">Styles</h2>
+  <p class="mt-3 max-w-xl text-muted">Hover any of them. Open the code to copy it as it is: Tailwind classes, light and dark.</p>
+  {groups.map(([family, title, lead]) => (
+    <div class="mt-14">
+      <h3 class="text-xl font-semibold">{title}</h3>
+      <p class="mt-1 text-sm text-muted">{lead}</p>
+      <ul class="mt-6 grid gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-2 lg:grid-cols-3">
+        {STYLES.filter((s) => s.family === family).map((s) => (
+          <li class="flex flex-col bg-bg">
+            <div class:list={['grid h-44 place-items-center px-6 pt-10 pb-6', s.stage]} set:html={s.html} />
+            <details class="group border-t border-line">
+              <summary class="flex cursor-pointer list-none items-start gap-3 px-5 py-3 text-sm">
+                <span class="min-w-0 flex-1"><span class="block font-medium">{s.name}</span><span class="block text-muted">{s.note}</span></span>
+                <span class="mt-0.5 rounded-md border border-line px-2 py-0.5 text-xs text-muted group-open:border-fg group-open:text-fg">Code</span>
+              </summary>
+              <div class="relative border-t border-line bg-surface">
+                <Code code={imports(s)} lang="jsx" themes={{ light: 'github-light', dark: 'github-dark' }} defaultColor={false} />
+                <button data-copy={imports(s)} class="absolute top-2 right-2 rounded-md border border-line bg-bg px-2 py-1 text-xs" data-copy-label>Copy</button>
+              </div>
+            </details>
+          </li>
+        ))}
+      </ul>
+    </div>
+  ))}
+</section>

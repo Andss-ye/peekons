@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" data-gesture="hop">
+  <path d="M8.83 12L4.48 6.97A2.4 2.4 0 0 1 8.12 3.83L12 8.33L15.88 3.83A2.4 2.4 0 0 1 19.52 6.97L15.17 12L19.52 17.03A2.4 2.4 0 0 1 15.88 20.17L12 15.67L8.12 20.17A2.4 2.4 0 0 1 4.48 17.03L8.83 12Z" class="pk-body"/>
+  <circle cx="10.3" cy="11.8" r="1.15" class="pk-eye"/>
+  <circle cx="13.7" cy="11.8" r="1.15" class="pk-eye pk-wink"/>
+</svg>

@@ -1,0 +1,70 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/bricolage-grotesque/opsz.css';
+@import 'peekons/peekons.css';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* tokens: tinta azul de pluma sobre papel; el único acento es el rubor de las mascotas */
+:root {
+  color-scheme: light;
+  --bg: #ffffff;
+  --fg: #1b1e2b;
+  --muted: #5d6478;
+  --surface: #f1f3f8;
+  --line: #dce0ea;
+  --blush: #f59ab0;
+  --pk-ink: var(--fg);
+  --pk-paper: var(--bg);
+  --pk-blush: color-mix(in srgb, var(--blush) 70%, transparent);
+}
+.dark {
+  color-scheme: dark;
+  --bg: #12141c;
+  --fg: #e8ebf3;
+  --muted: #9aa1b5;
+  --surface: #1a1d28;
+  --line: #2b3040;
+  --blush: #f59ab0;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-surface: var(--surface);
+  --color-line: var(--line);
+  --color-blush: var(--blush);
+  --font-sans: 'Bricolage Grotesque Variable', ui-sans-serif, system-ui, sans-serif;
+}
+
+html {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+}
+::selection {
+  background: color-mix(in srgb, var(--blush) 45%, transparent);
+}
+:focus-visible {
+  outline: 2px solid var(--blush);
+  outline-offset: 2px;
+}
+
+/* código con los dos temas de Shiki */
+.astro-code,
+.astro-code span {
+  color: var(--shiki-light) !important;
+  background-color: transparent !important;
+}
+.dark .astro-code,
+.dark .astro-code span {
+  color: var(--shiki-dark) !important;
+}
+.astro-code {
+  font-size: 13px;
+  line-height: 1.6;
+  padding: 16px 18px;
+  overflow-x: auto;
+}

@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>peekons: design sheet</title>
+    <style>
+      body{margin:0;font:11px system-ui;display:grid;grid-template-columns:1fr 1fr}
+      .panel{padding:16px;display:grid;grid-template-columns:repeat(7,1fr);gap:8px;background:Canvas;color:CanvasText}
+      .dark{color-scheme:dark}
+      figure{margin:0;text-align:center}
+      figure svg{width:84px;height:84px;overflow:visible}
+      figure .real{width:26px;height:26px}
+    </style>
+  </head>
+  <body>
+    <div class="panel" id="light"></div>
+    <div class="panel dark" id="dark"></div>
+    <script type="module" src="./sheet.ts"></script>
+  </body>
+</html>

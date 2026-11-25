@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" data-gesture="wink">
+  <path d="M12 6.8C10.8 5 9.2 4 7.2 4 4.6 4 2.5 6 2.5 8.8c0 4.2 3.5 7.8 9.5 11.7 6-3.9 9.5-7.5 9.5-11.7C21.5 6 19.4 4 16.8 4c-2 0-3.6 1-4.8 2.8Z" class="pk-body"/>
+  <circle cx="9.8" cy="10.8" r="1.15" class="pk-eye"/>
+  <circle cx="14.2" cy="10.8" r="1.15" class="pk-eye pk-wink"/>
+  <ellipse cx="8.2" cy="12.8" rx="1.1" ry=".6" class="pk-blush"/>
+  <ellipse cx="15.8" cy="12.8" rx="1.1" ry=".6" class="pk-blush"/>
+</svg>

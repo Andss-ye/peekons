@@ -1,0 +1,29 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import Gallery from '../components/Gallery.astro';
+import Icons from '../components/Icons.astro';
+import Perf from '../components/Perf.astro';
+import Usage from '../components/Usage.astro';
+import Footer from '../components/Footer.astro';
+import Playground from '../components/Playground';
+---
+<Base title="peekons: icons that peek out of your buttons" description="Icons with a face that peek out of buttons, cards and text, make a gesture and hide again. React, Astro or plain HTML.">
+  <Header />
+  <main>
+    <Hero />
+    <Playground client:visible />
+    <Gallery />
+    <Icons />
+    <Perf />
+    <Usage />
+  </main>
+  <Footer />
+  <script>
+    import '../scripts/page';
+    import { mount } from 'peekons';
+    import * as icons from 'peekons/icons';
+    mount(icons, { root: document.querySelector('footer')! });
+  </script>
+</Base>

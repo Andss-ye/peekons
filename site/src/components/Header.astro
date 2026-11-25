@@ -1,0 +1,38 @@
+---
+const links = [
+  ['Playground', '#playground'],
+  ['Styles', '#styles'],
+  ['Icons', '#icons'],
+  ['Performance', '#performance'],
+  ['Docs', '#docs'],
+];
+---
+<header class="sticky top-0 z-20 border-b border-line bg-bg/85 backdrop-blur">
+  <div class="mx-auto flex h-14 max-w-6xl items-center gap-6 px-5">
+    <a href="#top" class="text-lg font-bold tracking-tight">peekons</a>
+    <nav class="hidden gap-5 text-sm text-muted md:flex" aria-label="Sections">
+      {links.map(([label, href]) => <a href={href} class="hover:text-fg">{label}</a>)}
+    </nav>
+    <div class="ml-auto flex items-center gap-3">
+      <div class="flex rounded-full border border-line p-0.5 text-xs" role="radiogroup" aria-label="Theme">
+        {['light', 'dark', 'system'].map((t) => (
+          <button data-theme={t} role="radio" aria-checked="false" class="rounded-full px-2.5 py-1 capitalize text-muted aria-checked:bg-surface aria-checked:text-fg">{t}</button>
+        ))}
+      </div>
+      <a href="https://github.com/andssye/peekons" class="text-sm text-muted hover:text-fg">GitHub</a>
+    </div>
+  </div>
+</header>
+<script>
+  const root = document.documentElement;
+  const buttons = document.querySelectorAll<HTMLButtonElement>('[data-theme]');
+  const system = matchMedia('(prefers-color-scheme: dark)');
+  const apply = () => {
+    const saved = localStorage.getItem('theme') ?? 'system';
+    root.classList.toggle('dark', saved === 'dark' || (saved === 'system' && system.matches));
+    buttons.forEach((b) => b.setAttribute('aria-checked', String(b.dataset.theme === saved)));
+  };
+  buttons.forEach((b) => b.addEventListener('click', () => (localStorage.setItem('theme', b.dataset.theme!), apply())));
+  system.addEventListener('change', apply);
+  apply();
+</script>
