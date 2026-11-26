@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" data-gesture="flip">
-  <path d="M2.89 13.32L7.69 17.82A2.5 2.5 0 0 0 11.21 17.72L21.21 7.22A2.5 2.5 0 0 0 17.59 3.78L9.3 12.48L6.31 9.68A2.5 2.5 0 0 0 2.89 13.32Z" class="pk-body"/>
-  <circle cx="7" cy="13.8" r="1.15" class="pk-eye"/>
-  <circle cx="11.7" cy="13.6" r="1.15" class="pk-eye pk-wink"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" data-gesture="flip" data-voice="sparkle">
+  <path d="M3.79 13.72L7.79 17.92A2.5 2.5 0 0 0 11.44 17.89L20.24 8.29A2.5 2.5 0 0 0 16.56 4.91L9.57 12.54L7.41 10.28A2.5 2.5 0 0 0 3.79 13.72Z" class="pk-body"/>
+  <circle cx="7" cy="13.47" r="1.3" class="pk-eye"/>
+  <circle cx="12.3" cy="13.3" r="1.3" class="pk-eye pk-wink"/>
 </svg>

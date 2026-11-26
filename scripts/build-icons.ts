@@ -6,6 +6,7 @@ import { readdirSync, readFileSync, rmSync, writeFileSync, mkdirSync } from 'nod
 import { basename, join } from 'node:path';
 import { optimize } from 'svgo';
 import { GESTURES } from '../src/peek.js';
+import { VOICES } from '../src/sound.js';
 
 const SRC = 'icons';
 const OUT = 'src/icons';
@@ -21,6 +22,9 @@ const built = files.map((file) => {
   const name = basename(file, '.svg');
   const raw = readFileSync(join(SRC, file), 'utf8');
   const gesture = raw.match(/data-gesture="([^"]+)"/)?.[1] ?? 'wink';
+  const voice = raw.match(/data-voice="([^"]+)"/)?.[1] ?? 'blip';
+  if (!(VOICES as readonly string[]).includes(voice)) throw new Error(`${file}: voz desconocida "${voice}"`);
+  if (/stroke-width/.test(raw)) throw new Error(`${file}: los grosores vienen de peekons.css, no del SVG`);
   if (!/^[a-z][a-z0-9]*$/.test(name) || RESERVED.has(name))
     throw new Error(`${file}: el nombre debe ser un identificador en minúsculas y no una palabra reservada`);
   if (!Object.hasOwn(GESTURES, gesture)) throw new Error(`${file}: gesto desconocido "${gesture}"`);
@@ -31,7 +35,7 @@ const built = files.map((file) => {
   if (!inner.includes('pk-wink')) throw new Error(`${file}: falta el ojo .pk-wink`);
   return {
     name,
-    code: `import type { PeekIcon } from '../peek.js';\n\nexport const ${name}: PeekIcon = {\n  name: '${name}',\n  gesture: '${gesture}',\n  svg: ${JSON.stringify(inner)},\n};\n`,
+    code: `import type { PeekIcon } from '../peek.js';\n\nexport const ${name}: PeekIcon = {\n  name: '${name}',\n  gesture: '${gesture}',\n  voice: '${voice}',\n  svg: ${JSON.stringify(inner)},\n};\n`,
   };
 });
 
