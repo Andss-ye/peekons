@@ -20,6 +20,10 @@
       "types": "./dist/icons/index.d.ts",
       "default": "./dist/icons/index.js"
     },
+    "./sound": {
+      "types": "./dist/sound.d.ts",
+      "default": "./dist/sound.js"
+    },
     "./react": {
       "types": "./dist/react.d.ts",
       "default": "./dist/react.js"
