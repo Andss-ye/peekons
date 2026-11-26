@@ -1,30 +1,55 @@
 @import 'tailwindcss';
-@import '@fontsource-variable/bricolage-grotesque/opsz.css';
+@import '@fontsource-variable/quicksand';
+@import '@fontsource-variable/geist-mono';
 @import 'peekons/peekons.css';
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* tokens: tinta azul de pluma sobre papel; el único acento es el rubor de las mascotas */
+/* tokens: papel gris claro y tinta casi negra; las tintas de color solo pintan mascotas */
 :root {
   color-scheme: light;
-  --bg: #ffffff;
-  --fg: #1b1e2b;
-  --muted: #5d6478;
-  --surface: #f1f3f8;
-  --line: #dce0ea;
-  --blush: #f59ab0;
+  --bg: #ececea;
+  --fg: #1d1e26;
+  --muted: #6b6c75;
+  --surface: #e2e2df;
+  --line: #d3d3cf;
   --pk-ink: var(--fg);
   --pk-paper: var(--bg);
-  --pk-blush: color-mix(in srgb, var(--blush) 70%, transparent);
+  --pk-blush: #f4a3b7;
+  --pk-size: 30px;
+  /* lo que esperan los componentes de shadcn/ui y Magic UI */
+  --background: #ffffff;
+  --foreground: var(--fg);
+  --primary: var(--fg);
+  --primary-foreground: #ffffff;
+  --secondary: #dcdcd8;
+  --secondary-foreground: var(--fg);
+  --accent: #dcdcd8;
+  --accent-foreground: var(--fg);
+  --destructive: #d23b2e;
+  --border: #c9c9c4;
+  --input: #c9c9c4;
+  --ring: #1d1e26;
+  --color-1: oklch(66.2% 0.225 25.9);
+  --color-2: oklch(60.4% 0.26 302);
+  --color-3: oklch(69.6% 0.165 251);
+  --color-4: oklch(80.2% 0.134 225);
+  --color-5: oklch(90.7% 0.231 133);
 }
 .dark {
   color-scheme: dark;
-  --bg: #12141c;
-  --fg: #e8ebf3;
-  --muted: #9aa1b5;
-  --surface: #1a1d28;
-  --line: #2b3040;
-  --blush: #f59ab0;
+  --bg: #16171b;
+  --fg: #ececea;
+  --muted: #9a9ba5;
+  --surface: #202128;
+  --line: #2d2e36;
+  --background: #0f1013;
+  --primary-foreground: #16171b;
+  --secondary: #2a2b33;
+  --accent: #2a2b33;
+  --border: #383944;
+  --input: #383944;
+  --ring: #ececea;
 }
 
 @theme inline {
@@ -33,38 +58,56 @@
   --color-muted: var(--muted);
   --color-surface: var(--surface);
   --color-line: var(--line);
-  --color-blush: var(--blush);
-  --font-sans: 'Bricolage Grotesque Variable', ui-sans-serif, system-ui, sans-serif;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --font-sans: 'Quicksand Variable', ui-rounded, system-ui, sans-serif;
+  --font-mono: 'Geist Mono Variable', ui-monospace, monospace;
+  --animate-shimmer-slide: shimmer-slide var(--speed) ease-in-out infinite alternate;
+  --animate-spin-around: spin-around calc(var(--speed) * 2) infinite linear;
+  --animate-rainbow: rainbow var(--speed, 2s) infinite linear;
+  --animate-pulse: pulse var(--duration) ease-out infinite;
+  --animate-rippling: rippling var(--duration) ease-out;
 }
+
+/* keyframes de Magic UI (MIT) */
+@keyframes shimmer-slide { to { transform: translate(calc(100cqw - 100%), 0); } }
+@keyframes spin-around {
+  0% { transform: translateZ(0) rotate(0); }
+  15%, 35% { transform: translateZ(0) rotate(90deg); }
+  65%, 85% { transform: translateZ(0) rotate(270deg); }
+  100% { transform: translateZ(0) rotate(360deg); }
+}
+@keyframes rainbow { 0% { background-position: 0%; } 100% { background-position: 200%; } }
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 0 var(--pulse-color); }
+  50% { box-shadow: 0 0 0 var(--distance) var(--pulse-color); }
+}
+@keyframes rippling { 0% { opacity: 1; } 100% { transform: scale(2); opacity: 0; } }
 
 html {
   background: var(--bg);
   color: var(--fg);
   font-family: var(--font-sans);
-  font-optical-sizing: auto;
+  font-weight: 500;
   -webkit-font-smoothing: antialiased;
 }
-::selection {
-  background: color-mix(in srgb, var(--blush) 45%, transparent);
-}
-:focus-visible {
-  outline: 2px solid var(--blush);
-  outline-offset: 2px;
+::selection { background: color-mix(in srgb, var(--pk-blush) 55%, transparent); }
+:focus-visible { outline: 2px solid var(--fg); outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
 }
 
 /* código con los dos temas de Shiki */
-.astro-code,
-.astro-code span {
-  color: var(--shiki-light) !important;
-  background-color: transparent !important;
-}
-.dark .astro-code,
-.dark .astro-code span {
-  color: var(--shiki-dark) !important;
-}
-.astro-code {
-  font-size: 13px;
-  line-height: 1.6;
-  padding: 16px 18px;
-  overflow-x: auto;
-}
+.astro-code, .astro-code span { color: var(--shiki-light) !important; background-color: transparent !important; }
+.dark .astro-code, .dark .astro-code span { color: var(--shiki-dark) !important; }
+.astro-code { font-family: var(--font-mono); font-size: 13px; line-height: 1.65; padding: 18px 20px; overflow-x: auto; }

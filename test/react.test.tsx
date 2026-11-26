@@ -97,3 +97,20 @@ it('greet={false} keeps it still until someone hovers', () => {
   expect(made).toHaveLength(0);
   act(() => root.unmount());
 });
+
+it('an inline sound function does not rebind on every render', () => {
+  const root = createRoot(document.getElementById('root')!);
+  const view = () => (
+    <button>
+      Go
+      <Peekon icon={mail} greet={false} sound={() => {}} />
+    </button>
+  );
+  act(() => root.render(view()));
+  const button = document.querySelector('button')!;
+  button.dispatchEvent(new PointerEvent('pointerenter'));
+  const n = live().length;
+  act(() => root.render(view()));
+  expect(live()).toHaveLength(n);
+  act(() => root.unmount());
+});

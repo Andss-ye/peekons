@@ -1,0 +1,32 @@
+---
+const steps = [
+  ['peekons', '#peekons'],
+  ['Pick', '#pick'],
+  ['Install', '#install'],
+  ['API', '#api'],
+];
+---
+<nav aria-label="Sections" class="fixed top-1/2 left-8 z-20 hidden -translate-y-1/2 xl:block">
+  <ol class="space-y-4 text-[15px]">
+    {steps.map(([label, href], i) => (
+      <li><a href={href} data-rail class="text-muted transition hover:text-fg aria-[current=true]:text-fg"><span class="mr-2 tabular-nums">{i + 1}.</span>{label}</a></li>
+    ))}
+  </ol>
+</nav>
+<script>
+  // marca la sección que está a la vista
+  const links = [...document.querySelectorAll<HTMLAnchorElement>('[data-rail]')];
+  const io = new IntersectionObserver(
+    (entries) => {
+      for (const e of entries) {
+        if (!e.isIntersecting) continue;
+        links.forEach((a) => a.setAttribute('aria-current', String(a.hash === `#${e.target.id}`)));
+      }
+    },
+    { rootMargin: '-45% 0px -50% 0px' }
+  );
+  links.forEach((a) => {
+    const target = document.querySelector(a.hash);
+    if (target) io.observe(target);
+  });
+</script>

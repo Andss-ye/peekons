@@ -3,7 +3,12 @@ export interface PeekIcon {
   name: string;
   svg: string;
   gesture: Gesture;
+  /** La voz que usa `chirp` de `peekons/sound`. */
+  voice?: string;
 }
+
+/** Suena cuando la mascota sale: `peek` al hover o focus, `hello` al saludar sola. */
+export type PeekSound = (icon: PeekIcon, moment: 'peek' | 'hello') => void;
 
 export type Gesture = keyof typeof GESTURES;
 
@@ -12,6 +17,8 @@ export interface PeekOptions {
   gesture?: Gesture;
   /** Saluda solo la primera vez que el host entra en pantalla. Por defecto `true`. */
   greet?: boolean;
+  /** Sonido al salir; sin él no hay audio. `chirp` de `peekons/sound` usa la voz de cada ícono. */
+  sound?: PeekSound;
 }
 
 /**
@@ -56,6 +63,8 @@ const HELLO: Keyframe[] = [
   { offset: 1, transform: HIDDEN },
 ];
 const STAGGER = 120;
+/** Cuántos saludos de una misma tanda suenan; el resto saluda en silencio para no sumar voces. */
+const VOICED = 4;
 
 /** Mascotas vivas por host; la primera fija `position: relative` si hacía falta y la última lo devuelve. */
 const anchors = new WeakMap<HTMLElement, { n: number; set: boolean }>();
@@ -94,10 +103,10 @@ const FRAMES = Object.fromEntries(
 ) as Record<Gesture, { frames: Keyframe[]; total: number }>;
 
 /** Un solo IntersectionObserver para todos los hosts que saludan; cada host guarda sus saludos pendientes. */
-const greeters = new WeakMap<Element, Set<(delay: number) => void>>();
+const greeters = new WeakMap<Element, Set<(delay: number, voiced: boolean) => void>>();
 let watcher: IntersectionObserver | undefined;
 
-function onSight(host: HTMLElement, hello: (delay: number) => void) {
+function onSight(host: HTMLElement, hello: (delay: number, voiced: boolean) => void) {
   watcher ??= new IntersectionObserver(
     (entries) => {
       let slot = 0;
@@ -106,8 +115,9 @@ function onSight(host: HTMLElement, hello: (delay: number) => void) {
         watcher!.unobserve(e.target);
         const set = greeters.get(e.target);
         greeters.delete(e.target);
+        const voiced = slot < VOICED;
         const delay = Math.min(slot++, 8) * STAGGER;
-        set?.forEach((fn) => fn(delay));
+        set?.forEach((fn) => fn(delay, voiced));
       }
     },
     { rootMargin: '0px 0px -15% 0px' }
@@ -150,6 +160,16 @@ export function bind(host: HTMLElement, pk: Element, icon: PeekIcon, opts: PeekO
   let hovered = false;
   let focused = false;
   let release: (() => void) | undefined;
+  let ringing: ReturnType<typeof setTimeout> | undefined;
+
+  // un sonido que falla no debe frenar al resto de los saludos de la tanda
+  const ring = (moment: 'peek' | 'hello') => {
+    try {
+      opts.sound?.(icon, moment);
+    } catch (error) {
+      globalThis.reportError?.(error);
+    }
+  };
 
   // el host se ancla al dibujar: entonces está en el DOM y su posición calculada es la real
   const draw = () => {
@@ -166,6 +186,7 @@ export function bind(host: HTMLElement, pk: Element, icon: PeekIcon, opts: PeekO
   };
   // lee dónde está antes de cancelar, para que cada tramo nuevo arranque sin salto
   const stop = () => {
+    clearTimeout(ringing);
     const t = svg ? getComputedStyle(svg).transform : '';
     body?.cancel();
     blink?.cancel();
@@ -187,6 +208,7 @@ export function bind(host: HTMLElement, pk: Element, icon: PeekIcon, opts: PeekO
     const from = stop();
     body = draw().animate([{ offset: 0, transform: from, easing: BACK }, ...move.frames], { duration: move.total, fill: 'forwards' });
     wink(380);
+    ring('peek');
   };
   const hide = () => {
     if (!out || hovered || focused) return;
@@ -194,11 +216,15 @@ export function bind(host: HTMLElement, pk: Element, icon: PeekIcon, opts: PeekO
     const from = stop();
     settle(draw().animate([{ transform: from }, { transform: HIDDEN }], { duration: 250, easing: EASE_IN }));
   };
-  const hello = (delay: number) => {
+  const hello = (delay: number, voiced: boolean) => {
     if (out || calm()) return;
     const from = stop();
     settle(draw().animate([{ ...HELLO[0], transform: from }, ...HELLO.slice(1)], { duration: 1550, delay }));
     wink(delay + 520);
+    if (voiced && opts.sound) {
+      if (delay) ringing = setTimeout(() => ring('hello'), delay);
+      else ring('hello');
+    }
   };
 
   const on = <K extends keyof HTMLElementEventMap>(type: K, fn: (e: HTMLElementEventMap[K]) => void) =>

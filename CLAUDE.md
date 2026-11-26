@@ -10,13 +10,19 @@ sistema ni datos personales.
 - `npm run typecheck` · `npm run build` (regenera íconos y compila a `dist/`)
 - `npm run e2e` (Playwright con el Chrome instalado; levanta y baja el playground en :5199)
 - `playground/sheet.html`: hoja de diseño de los íconos en grande, claro y oscuro
-- Landing en `site/` (Astro 7 + React + Tailwind 4, importa `../src` por alias): `npm run build` y
-  `npx playwright test` dentro de `site/`. `astro preview` queda desprendido: probar con `vite preview`.
+- Landing en `site/` (Astro 7 + React + Tailwind 4 + motion, importa `../src` por alias): `npm run build`
+  y `npx playwright test` dentro de `site/`. `astro preview` queda desprendido: probar con `vite preview`.
+  Los botones de terceros (`site/src/components/kit/`) solo de librerías MIT, con su aviso en
+  `site/THIRD_PARTY_NOTICES.txt`.
 
 ## Reglas
 
 - `src/icons/` es generado: se edita `icons/*.svg` y se corre `npm run icons`. El build rechaza clases
-  fuera del set `pk-*`, gestos desconocidos y íconos sin `.pk-wink`.
+  fuera del set `pk-*`, gestos o voces desconocidos, `stroke-width` en el SVG y íconos sin `.pk-wink`.
+- Reglas de dibujo (zona viva 2–22, ojos r 1.3 a 4–5.5, cara entre y 7 y 15.5, detalles ≥ 3.5): las
+  mide `e2e/spec.spec.ts`. Los grosores (cuerpo 2, detalle 1.75) solo viven en `peekons.css`.
+- Sonido opcional en `src/sound.ts` (`peekons/sound`): el motor solo llama a `opts.sound`; nunca se
+  crea un AudioContext sin esa opción.
 - Cero dependencias de runtime; React es peer opcional.
 - Todo lo que `bind` engancha se suelta en su cleanup; el e2e de 500 montajes lo mide con CDP.
 - En reposo el `.pk` está vacío: el SVG se crea al actuar y se borra al esconderse. El saludo usa un

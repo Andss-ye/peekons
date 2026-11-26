@@ -1,0 +1,40 @@
+<div class="fixed top-4 right-4 z-30 flex items-center gap-1 rounded-full bg-bg/80 p-1 backdrop-blur">
+  <button id="sound" aria-pressed="false" aria-label="Sound" class="grid size-9 cursor-pointer place-items-center rounded-full text-muted transition hover:bg-surface hover:text-fg aria-pressed:text-fg">
+    <svg viewBox="0 0 24 24" class="size-[18px]" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M11 5 6 9H3v6h3l5 4z" />
+      <path data-on d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13" />
+      <path data-off d="m16 9 5 5m0-5-5 5" />
+    </svg>
+  </button>
+  <button id="theme" aria-label="Toggle dark mode" class="grid size-9 cursor-pointer place-items-center rounded-full text-muted transition hover:bg-surface hover:text-fg">
+    <svg viewBox="0 0 24 24" class="size-[18px]" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+      <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z" />
+    </svg>
+  </button>
+  <a href="https://github.com/Andss-ye/peekons" class="rounded-full px-3 py-1.5 font-mono text-xs text-muted transition hover:bg-surface hover:text-fg">github</a>
+</div>
+<script>
+  import { setSound } from '../lib/sound';
+
+  // sonido: apagado hasta que alguien lo prende; el click también destraba el audio del navegador
+  const sound = document.getElementById('sound')!;
+  const paint = (on: boolean) => {
+    sound.setAttribute('aria-pressed', String(on));
+    sound.querySelector<SVGElement>('[data-on]')!.style.display = on ? '' : 'none';
+    sound.querySelector<SVGElement>('[data-off]')!.style.display = on ? 'none' : '';
+  };
+  let on = localStorage.getItem('peekons-sound') === 'on';
+  setSound(on);
+  paint(on);
+  sound.addEventListener('click', () => {
+    on = !on;
+    localStorage.setItem('peekons-sound', on ? 'on' : 'off');
+    setSound(on);
+    paint(on);
+  });
+
+  document.getElementById('theme')!.addEventListener('click', () => {
+    const dark = document.documentElement.classList.toggle('dark');
+    localStorage.setItem('theme', dark ? 'dark' : 'light');
+  });
+</script>

@@ -3,5 +3,6 @@ import type { PeekIcon } from '../peek.js';
 export const chat: PeekIcon = {
   name: 'chat',
   gesture: 'nod',
-  svg: "<path d=\"M6.5 3h11A2.5 2.5 0 0 1 20 5.5v8a2.5 2.5 0 0 1-2.5 2.5H11l-4.5 4v-4A2.5 2.5 0 0 1 4 13.5v-8A2.5 2.5 0 0 1 6.5 3\" class=\"pk-body\"/><circle cx=\"9.8\" cy=\"8.8\" r=\"1.15\" class=\"pk-eye\"/><circle cx=\"14.2\" cy=\"8.8\" r=\"1.15\" class=\"pk-eye pk-wink\"/><ellipse cx=\"8.2\" cy=\"10.8\" class=\"pk-blush\" rx=\"1.1\" ry=\".6\"/><ellipse cx=\"15.8\" cy=\"10.8\" class=\"pk-blush\" rx=\"1.1\" ry=\".6\"/><path d=\"M10.8 11.8c.7.6 1.7.6 2.4 0\" class=\"pk-line\"/>",
+  voice: 'bubble',
+  svg: "<path d=\"M6.5 3.5h11a3 3 0 0 1 3 3V14a3 3 0 0 1-3 3H11l-4.5 4v-4a3 3 0 0 1-3-3V6.5a3 3 0 0 1 3-3\" class=\"pk-body\"/><circle cx=\"9.75\" cy=\"9.4\" r=\"1.3\" class=\"pk-eye\"/><circle cx=\"14.25\" cy=\"9.4\" r=\"1.3\" class=\"pk-eye pk-wink\"/><ellipse cx=\"8.05\" cy=\"11.5\" class=\"pk-blush\" rx=\"1.1\" ry=\".6\"/><ellipse cx=\"15.95\" cy=\"11.5\" class=\"pk-blush\" rx=\"1.1\" ry=\".6\"/><path d=\"M10.3 12.4c1 .9 2.4.9 3.4 0\" class=\"pk-line\"/>",
 };
