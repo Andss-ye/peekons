@@ -3,7 +3,9 @@
 Icons with a face that peek out of a button, a box or a word when you hover or focus it, make a
 little gesture and hide again when you leave.
 
-- 27 icons, each under 1.2 KB of SVG, one file per icon so bundlers only ship what you import.
+- 27 icons drawn to one spec (24×24 grid, thick 2 px outlines, the same face on all), each under
+  1.2 KB of SVG and its own file, so bundlers only ship what you import.
+- Optional sound: every icon has its own synthesized voice, or bring your own file.
 - Each mascot says hello once when it first scrolls into view. Turn it off per host or for all.
 - A resting mascot is one empty span: its SVG is drawn only while it moves and removed when it hides.
 - No runtime dependencies: the motion is the Web Animations API.
@@ -60,6 +62,35 @@ Mark the hosts with `data-peekon` and mount once:
 every host. For a single element there is `attach(element, icon, { gesture, greet })`, which also
 returns its cleanup.
 
+## Sound
+
+Off unless you ask for it:
+
+```js
+import { chirp, soundFrom, setSound } from 'peekons/sound';
+
+<Peekon icon={mail} sound={chirp} />                 // the icon's own voice
+<Peekon icon={mail} sound={soundFrom('/pop.mp3')} /> // your own file
+mount(icons, { sound: chirp });                      // every host
+setSound(false);                                     // mute everything, e.g. from a speaker toggle
+```
+
+`sound` can also be any function `(icon, moment, delay) => void`, where `moment` is `'peek'` or
+`'hello'`. Nothing is created until the first sound, and browsers keep audio locked until the user
+has clicked or typed on the page.
+
+## Buttons that clip
+
+If a button hides what sticks out of it (`overflow: hidden`, a mask), wrap it and let the wrapper be
+the host:
+
+```jsx
+<span className="relative inline-flex">
+  <ShimmerButton>Write me</ShimmerButton>
+  <Peekon icon={mail} />
+</span>
+```
+
 ## Gestures
 
 | Gesture | What it does |
@@ -114,8 +145,14 @@ Draw it in `icons/<name>.svg` on a 24×24 viewBox with these classes, then run `
 | `pk-blush` | cheeks |
 | `pk-accent`, `pk-solid`, `pk-rev` | accent fill, solid body, paper-colored detail on a solid body |
 
-Keep the face above y≈19: the bottom of the mascot stays behind the host's edge. Set the gesture with
-`data-gesture` on the `<svg>`.
+Set the gesture with `data-gesture` and the voice with `data-voice` on the `<svg>`. The build rejects
+unknown classes, gestures and voices, and any `stroke-width` (thicknesses come from the CSS). A
+Playwright test checks every icon against the drawing rules:
+
+- everything, strokes included, stays inside 2–22 of the 24×24 grid, and the shape is at least 15 wide or tall;
+- two eyes of radius 1.3, 4 to 5.5 apart, between y 7 and 15.5 (the part that shows over the edge);
+  the right one winks;
+- no `pk-line` detail shorter than 3.5.
 
 ## Development
 
@@ -124,13 +161,19 @@ npm test          # unit tests
 npm run typecheck
 npm run build
 npm run dev       # playground on :5199 (sheet.html: every icon large, light and dark)
-npm run e2e       # Playwright: every icon, clicks, reduced motion, leaks, 100 hosts
+npm run e2e       # Playwright: drawing rules, every icon, clicks, reduced motion, leaks, 100 hosts
 ```
 
 The landing page lives in `site/` (Astro, uses the library from `../src`):
 
 ```sh
 cd site && npm run build && npx playwright test
+```
+
+The landing shows peekons on buttons from shadcn/ui, Magic UI and Animata (all MIT); their notices are
+in `site/THIRD_PARTY_NOTICES.txt`. None of that code ships in the package.
+
+```sh
 ```
 
 ## License
