@@ -14,6 +14,7 @@ export default defineConfig({
       alias: [
         { find: /^peekons\/react$/, replacement: lib('src/react.tsx') },
         { find: /^peekons\/icons$/, replacement: lib('src/icons/index.ts') },
+        { find: /^peekons\/sound$/, replacement: lib('src/sound.ts') },
         { find: /^peekons\/peekons\.css$/, replacement: lib('peekons.css') },
         { find: /^peekons$/, replacement: lib('src/index.ts') },
       ],

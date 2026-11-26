@@ -7,7 +7,8 @@
     "paths": {
       "peekons": ["../src/index.ts"],
       "peekons/icons": ["../src/icons/index.ts"],
-      "peekons/react": ["../src/react.tsx"]
+      "peekons/react": ["../src/react.tsx"],
+      "peekons/sound": ["../src/sound.ts"]
     }
   }
 }
