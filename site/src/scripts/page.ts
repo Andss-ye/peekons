@@ -1,8 +1,9 @@
 /** Engancha todas las mascotas marcadas en la página y los botones de copiar. */
 import { mount } from 'peekons';
 import * as icons from 'peekons/icons';
+import { chirp } from '../lib/sound';
 
-mount(icons, { root: document.querySelector('main')! });
+for (const id of ['install', 'api']) mount(icons, { root: document.getElementById(id)!, sound: chirp });
 
 const timers = new WeakMap<HTMLElement, ReturnType<typeof setTimeout>>();
 

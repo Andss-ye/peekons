@@ -1,0 +1,64 @@
+---
+import * as icons from 'peekons/icons';
+const all = Object.values(icons);
+const options = [
+  ['icon', 'required', 'Which mascot. Import it from peekons/icons.'],
+  ['gesture', "the icon's own", 'wink, wave, nod, hop, flip or spin.'],
+  ['greet', 'true', 'Say hello once when the host first scrolls into view.'],
+  ['sound', 'none', 'chirp for each icon’s voice, soundFrom(url) for a file, or your own function.'],
+];
+const vars = [
+  ['--pk-ink', 'page text', 'Outlines and eyes.'],
+  ['--pk-paper', 'page background', 'Body fill.'],
+  ['--pk-accent', 'ink', 'Hearts and solid tiles.'],
+  ['--pk-blush', 'ink at 16%', 'Cheeks.'],
+  ['--pk-size', '26px', 'Mascot size.'],
+  ['--pk-inset', '5px', 'Distance from the right edge.'],
+];
+---
+<section id="api" class="mx-auto max-w-5xl px-6 py-28">
+  <h2 class="text-[clamp(34px,4.6vw,52px)] leading-[1.08] font-semibold tracking-[-0.02em]">API</h2>
+  <p class="mt-5 max-w-lg text-lg text-muted">{all.length} mascots, each its own file. Hover to meet them, click to copy the import.</p>
+
+  <ul class="mt-10 grid grid-cols-3 gap-2 sm:grid-cols-6 lg:grid-cols-9">
+    {all.map((icon) => (
+      <li>
+        <button data-peekon={icon.name} data-copy={`import { ${icon.name} } from 'peekons/icons';`} class="relative flex h-24 w-full cursor-pointer flex-col items-center justify-end gap-0.5 rounded-xl pb-3 transition hover:bg-surface">
+          <span class="text-sm font-semibold">{icon.name}</span>
+          <span data-copy-label class="font-mono text-[10px] text-muted">{icon.gesture}, {icon.voice}</span>
+        </button>
+      </li>
+    ))}
+  </ul>
+
+  <div class="mt-20 grid gap-12 lg:grid-cols-2">
+    <div>
+      <h3 class="text-xl font-semibold">Options</h3>
+      <dl class="mt-4 text-sm">
+        {options.map(([o, d, w]) => (
+          <div class="grid grid-cols-[90px_1fr] gap-x-4 border-t border-line py-3">
+            <dt class="font-mono text-xs leading-5">{o}</dt>
+            <dd>{w} <span class="text-muted">Default: {d}.</span></dd>
+          </div>
+        ))}
+      </dl>
+      <p class="mt-4 text-sm text-muted">Same options in React props, attach(el, icon, options) and mount(icons, options). In HTML: data-peekon-gesture and data-peekon-greet="false".</p>
+    </div>
+    <div>
+      <h3 class="text-xl font-semibold">Colors and size</h3>
+      <dl class="mt-4 text-sm">
+        {vars.map(([v, d, w]) => (
+          <div class="grid grid-cols-[110px_1fr] gap-x-4 border-t border-line py-3">
+            <dt class="font-mono text-xs leading-5">{v}</dt>
+            <dd>{w} <span class="text-muted">Default: {d}.</span></dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </div>
+  <p class="mt-16 max-w-2xl text-sm text-muted">Mascots are hidden from screen readers, never take a click, and stay still for anyone who asked for reduced motion. At rest each one is a single empty span.</p>
+</section>
+<footer class="mx-auto flex max-w-5xl flex-wrap gap-4 px-6 pt-8 pb-14 text-sm text-muted">
+  <span>MIT licensed.</span>
+  <a href="https://github.com/Andss-ye/peekons/blob/main/site/THIRD_PARTY_NOTICES.txt" class="underline underline-offset-2">Third-party buttons and their licenses</a>
+</footer>

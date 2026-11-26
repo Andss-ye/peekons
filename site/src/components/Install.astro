@@ -1,0 +1,66 @@
+---
+import { Code } from 'astro:components';
+const themes = { light: 'github-light', dark: 'github-dark' } as const;
+const react = `import 'peekons/peekons.css';
+import { Peekon } from 'peekons/react';
+import { mail } from 'peekons/icons';
+
+<a href="mailto:hi@example.com" className="btn">
+  Write me
+  <Peekon icon={mail} />
+</a>`;
+const astro = `<a href="mailto:hi@example.com" data-peekon="mail">Write me</a>
+
+<script>
+  import 'peekons/peekons.css';
+  import { mount } from 'peekons';
+  import { mail } from 'peekons/icons';
+  mount({ mail });
+</script>`;
+const sound = `import { chirp, soundFrom, setSound } from 'peekons/sound';
+
+<Peekon icon={mail} sound={chirp} />                 // each icon's own voice
+<Peekon icon={mail} sound={soundFrom('/pop.mp3')} /> // your own file
+setSound(false)                                      // mute them all`;
+const clip = `// The button cuts off anything outside it (overflow: hidden)?
+// Wrap it, and let the wrapper be the host.
+<span className="relative inline-flex">
+  <ShimmerButton>Write me</ShimmerButton>
+  <Peekon icon={mail} />
+</span>`;
+const uses = [
+  ['Contact links', 'mail', 'Write me, call me, find me on GitHub.'],
+  ['Checkout', 'cart', 'A little cheer on the button that matters.'],
+  ['Empty states', 'folder', 'Nothing here yet, but someone says hi.'],
+  ['Onboarding', 'star', 'Point at the next step without an arrow.'],
+  ['Settings', 'settings', 'Make the boring page less boring.'],
+];
+---
+<section id="install" class="mx-auto max-w-5xl px-6 py-28">
+  <h2 class="text-[clamp(34px,4.6vw,52px)] leading-[1.08] font-semibold tracking-[-0.02em]">Install</h2>
+  <p class="mt-5 max-w-lg text-lg text-muted">No dependencies. About 2 KB of motion plus the icons you import. React, Astro, or plain HTML.</p>
+  <button data-copy="npm i peekons" class="mt-8 inline-flex h-11 cursor-pointer items-center gap-3 rounded-full bg-surface pr-1.5 pl-5 font-mono text-sm">
+    npm i peekons
+    <span data-copy-label class="rounded-full bg-bg px-3 py-1.5 font-sans text-xs">Copy</span>
+  </button>
+
+  <div class="mt-12 grid gap-6 lg:grid-cols-2 *:min-w-0">
+    <div><h3 class="mb-3 font-semibold">React</h3><div class="overflow-hidden rounded-xl bg-surface"><Code code={react} lang="jsx" themes={themes} defaultColor={false} /></div></div>
+    <div><h3 class="mb-3 font-semibold">Astro or plain HTML</h3><div class="overflow-hidden rounded-xl bg-surface"><Code code={astro} lang="astro" themes={themes} defaultColor={false} /></div></div>
+    <div><h3 class="mb-3 font-semibold">Sound, if you want it</h3><div class="overflow-hidden rounded-xl bg-surface"><Code code={sound} lang="jsx" themes={themes} defaultColor={false} /></div></div>
+    <div><h3 class="mb-3 font-semibold">Buttons that clip</h3><div class="overflow-hidden rounded-xl bg-surface"><Code code={clip} lang="jsx" themes={themes} defaultColor={false} /></div></div>
+  </div>
+
+  <h3 class="mt-20 text-2xl font-semibold">Where it fits</h3>
+  <p class="mt-2 max-w-lg text-muted">
+    It started on the contact buttons of the <a href="https://andssye.vercel.app" class="font-semibold text-fg underline decoration-2 underline-offset-4" data-peekon="github" data-peekon-gesture="hop">andssye portfolio</a>. It works best on the one or two buttons a page is really about.
+  </p>
+  <ul class="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+    {uses.map(([title, icon, text]) => (
+      <li tabindex="0" data-peekon={icon} class="relative rounded-2xl bg-surface p-5 pt-6">
+        <span class="block font-semibold">{title}</span>
+        <span class="mt-1 block text-sm text-muted">{text}</span>
+      </li>
+    ))}
+  </ul>
+</section>
